@@ -1,9 +1,6 @@
-const dotenv = require('dotenv')
 const request = require('request')
 const tldEnum = require('tld-enum')
 const tldExtract = require('tld-extract')
-
-dotenv.config()
 
 const gloriafoodOptions = {
   method: 'POST',
