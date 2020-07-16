@@ -1,19 +1,18 @@
 # GloriaFood Plugin
 
-Simple plugin to export GloriaFood clients using [Express 4](http://expressjs.com/).
+Simple plugin to export GloriaFood clients to HubSpot using [Heroku Scheduler](https://devcenter.heroku.com/articles/scheduler).
 
 ## Running Locally
 
-Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
+Make sure you have [Node.js](http://nodejs.org) and the [Heroku CLI](https://cli.heroku.com) installed.
 
 ```sh
-$ git clone https://github.com/tiflisgroup/gloriafood.git # or clone your own fork
-$ cd gloriafood
-$ npm install
-$ npm start
+git clone https://github.com/tiflisgroup/gloriafood.git # or clone your own fork
+cd gloriafood
+npm install
 ```
 
-The app should now be running on [localhost:5000](http://localhost:5000/).
+Run the plugin with `node index.js`.
 
 ## Deploying to Heroku
 
