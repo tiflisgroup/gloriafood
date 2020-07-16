@@ -7,10 +7,10 @@
   },
   "main": "index.js",
   "scripts": {
-    "run": "node index.js",
-    "test": "node test.js"
+    "run": "node index.js"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "request": "^2.88.2",
     "tld-enum": "^2.0.6",
     "tld-extract": "^1.1.4"

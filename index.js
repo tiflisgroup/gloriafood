@@ -1,6 +1,9 @@
+const dotenv = require('dotenv')
 const request = require('request')
 const tldEnum = require('tld-enum')
 const tldExtract = require('tld-extract')
+
+dotenv.config()
 
 const gloriafoodOptions = {
   method: 'POST',
@@ -39,7 +42,7 @@ request(gloriafoodOptions, (error, response, body) => {
   }
 
   request(hubspotOptions, (error, response, body) => {
-    if (error) throw new Error(error)
-    if (body && body.failureMessages) throw new Error(body.failureMessages)
+    if (error) throw error
+    if (body && body.failureMessages) throw body.failureMessages
   })
 })
