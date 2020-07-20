@@ -29,8 +29,7 @@ const parseClient = client => ({
     { property: 'email', value: client.email },
     { property: 'phone', value: client.phone },
     { property: 'orders', value: client.orders_count },
-    { property: 'total', value: client.orders_value },
-    { property: 'pizzeria', value: true }
+    { property: 'total', value: client.orders_value }  
   ]
 })
 
