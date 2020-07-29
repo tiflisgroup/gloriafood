@@ -4,12 +4,15 @@ const tldEnum = require('tld-enum')
 const tldExtract = require('tld-extract')
 const SlackBot = require('slackbots');
 
+const GLORIAFOOD_API_CLIENTS_URL = 'https://www.gloriafood.com/api/stats/clients_list'
+const HUBSPOT_API_CONTACTS_URL = 'https://api.hubapi.com/contacts/v1/contact/batch'
+
 dotenv.config()
 
 const gloriafoodOptions = {
   method: 'POST',
-  url: 'https://www.gloriafood.com/api/stats/clients_list',
-  headers: { 'Authorization': process.env.GLORIAFOOD_API_KEY },
+  url: GLORIAFOOD_API_CLIENTS_URL,
+  headers: { Authorization: process.env.GLORIAFOOD_API_KEY },
   body: {
     limit: 1_000_000
   },
@@ -34,13 +37,13 @@ const parseClient = client => ({
 })
 
 const postSuccessMessageToTechChannel = () => bot.postMessageToChannel('tech', `
-  ✅ Contacts successfully migrated to HubSpot :hubspot: See them live *<https://app.hubspot.com/contacts/8109649|here>*.
+  ✅ Contacts successfully migrated to HubSpot :hubspot: See them live *<https://app.hubspot.com/contacts/${process.env.HUBSPOT_ACCOUNT_ID}|here>*.
 `, {
   icon_emoji: ':gloriafood'
 })
 
-const postErrorMessageToTechChannel = error => bot.postMessageToChannel('tech', `
-  ❌ There was an error with running the contacts migration. See the full logs *<https://dashboard.heroku.com/apps/gloriafood/logs|here>*
+const postErrorMessageToTechChannel = () => bot.postMessageToChannel('tech', `
+  ❌ There was an error with running the contacts migration. See the full logs *<https://dashboard.heroku.com/apps/${process.env.HEROKU_APP_NAME}/logs|here>*
 `, {
   icon_emoji: ':gloriafood:'
 })
@@ -48,7 +51,7 @@ const postErrorMessageToTechChannel = error => bot.postMessageToChannel('tech', 
 const runPlugin = () => {
   request(gloriafoodOptions, (error, _, body) => {
     if (error) {
-      postErrorMessageToTechChannel(error)
+      postErrorMessageToTechChannel()
       throw error
     }
 
@@ -57,7 +60,7 @@ const runPlugin = () => {
 
     const hubspotOptions = {
       method: 'POST',
-      url: `https://api.hubapi.com/contacts/v1/contact/batch`,
+      url: HUBSPOT_API_CONTACTS_URL,
       qs: { hapikey: process.env.HUBSPOT_API_KEY },
       body: contacts,
       json: true
@@ -65,11 +68,11 @@ const runPlugin = () => {
 
     request(hubspotOptions, (error, response, body) => {
       if (error) {
-        postErrorMessageToTechChannel(error)
+        postErrorMessageToTechChannel()
         throw error
       }
       if (body && body.failureMessages) {
-        postErrorMessageToTechChannel(body.failureMessages)
+        postErrorMessageToTechChannel()
         return
       }
       postSuccessMessageToTechChannel()
